@@ -32,7 +32,7 @@ def get_readability_bookmarks(rdd):
 
 def get_sync_dir():
     """ Return dir that should be synced with readability account"""
-    return os.environ.get('READABILITY_SYNC_DIR',  '~/sync_test')  # TODO Get from user params
+    return os.environ.get('READABILITY_SYNC_DIR',  '/home/melevir/sync_test/')  # TODO Get from user params
 
 def validate_dir(dir, validate_existance=True, validate_read_rights=True, vallidat_write_rights=True):
     """ Raisies error if dir doesn't exist or now rw rights"""
@@ -41,7 +41,7 @@ def validate_dir(dir, validate_existance=True, validate_read_rights=True, vallid
 def get_books_from_dir(dir):
     """ Returns info about books currently in dir"""
     books = [f for f in listdir(dir) if isfile(join(dir,f)) and f.split('.')[-1] == 'epub']
-    books_info = [get_epub_info(b) for b in books]
+    books_info = [get_epub_info(os.path.join(dir, b)) for b in books]
     for book in books_info:
         finished = get_finished_in_percents(book)
         if finished:
@@ -56,6 +56,7 @@ def delete_books_not_in_bookmarks(dir, books, bookmarks):
     """ Deletes books in folder, but not in readability"""
     for book in books:
         if not book['title'] in [a['title'] for a in bookmarks]:
+            print book
             pass  # TODO delete book
 
 def delete_finished_books(dir, books):
@@ -70,7 +71,7 @@ def download_new_books(rdd, dir, books, bookmarks):
             pass  # TODO download book
 
 rdd = get_readability_api()
-bookmarks = get_readabitily_bookmarks(rdd)
+bookmarks = get_readability_bookmarks(rdd)
 sync_dir = get_sync_dir()
 validate_dir(sync_dir)
 books = get_books_from_dir(sync_dir)
