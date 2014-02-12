@@ -38,6 +38,4 @@ develop-eggs
 *.mo
 
 # Project
-/lava/local_settings.py
-/lava/public/static
-/lava/public/media
+*.db*

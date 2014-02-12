@@ -1,4 +1,4 @@
 ReadabitilySync
 ===============
 
-Syncronize articles between ebook and readability account.
+Syncronize articles between PocketBook device and readability account.
